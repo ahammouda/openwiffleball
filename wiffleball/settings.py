@@ -165,9 +165,9 @@ if os.environ['LOCAL_MACHINE']=='true':
 else:
     EMAIL_USE_TLS = True
     EMAIL_HOST = 'smtp.gmail.com'
+    EMAIL_PORT = 587
     EMAIL_HOST_USER = 'adamhammouda3@gmail.com'
     EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
-    EMAIL_PORT = 587
     DEFAULT_FROM_EMAIL = 'adamhammouda3@gmail.com'
 
 
