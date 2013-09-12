@@ -40,7 +40,7 @@ def choose_location(request):
         
 
 def start_game(request):
-    
+    '''
     if not Player.objects.all().exits():
         if request.method=='POST':
             form=PlayerCountForm(request.POST)
@@ -73,6 +73,8 @@ def start_game(request):
                                           'new_player_fs' : new_p_formset})
         
         return render_to_response('gameplay/startform_wball.html', context)
+    '''
+    pass
 
     
 def tmp_start(request):
