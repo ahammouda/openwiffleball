@@ -58,7 +58,8 @@ TEMPLATE_DEBUG = DEBUG
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Allow all host headers
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*'] #'openwiffleball.com']
+#ALLOWED_HOSTS = 'openwiffleball.com'
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
@@ -169,7 +170,6 @@ else:
     EMAIL_HOST_USER = 'ahammouda'
     EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
     #DEFAULT_FROM_EMAIL = 'wiffleball-support@noreply.com'
-    #ALLOWED_HOSTS = 'www.openwiffleball.com'
 
 
 if os.environ['LOCAL_MACHINE']=='true':
