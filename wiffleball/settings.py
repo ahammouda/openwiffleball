@@ -169,7 +169,7 @@ else:
     EMAIL_HOST_USER = 'ahammouda'
     EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
     #DEFAULT_FROM_EMAIL = 'wiffleball-support@noreply.com'
-    ALLOWED_HOSTS = 'www.openwiffleball.com'
+    #ALLOWED_HOSTS = 'www.openwiffleball.com'
 
 
 if os.environ['LOCAL_MACHINE']=='true':
