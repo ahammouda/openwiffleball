@@ -1,0 +1,19 @@
+Hitter Point Levels:
+
+W  walk
+Frontward K  strikeout from swinging and missing good balls
+Backward  K  strikeout from not swinging @ good balls
+
+1  single
+2  double
+3  triple
+4  home
+
+*Every batter gets an avg from (at bat's - walks)/hits
+
+RBI - Runs batted In 
+This is earned by the batter who hits a ball which brings someone across the plate
+
+ERA - Earned Run Avg
+This is earned by a pitcher, and it is 
+# (of runs against pitcher) / (innings?)

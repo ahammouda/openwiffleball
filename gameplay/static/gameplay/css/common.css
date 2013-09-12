@@ -1,0 +1,57 @@
+/*This is the template I'll likely use for each of the main pages in the nav-bar */
+html, body
+{
+height: 100%;
+margin:0px; padding:0px;
+background-image:url('../images/art_clouds.gif'); 
+background-repeat:no-repeat; background-size:cover;
+}
+/************************/
+/******** Navbar ********/
+/************************/
+#nav {
+/*border:1px solid #ccc;
+border-width:1px 0;*/
+list-style:none;
+margin:0;
+margin-left:200px;
+padding:0;
+border-bottom-right-radius:15px;
+/*text-align:center;*/
+}
+ul
+{
+list-style-type:none;
+margin:0;
+padding:0;
+padding-top:6px;
+padding-bottom:6px;
+
+}
+li
+{
+display:inline;
+}
+a:link,a:visited
+{
+font-family:'Chango', cursive;
+font-weight:bold;
+color:#FFFFFF;
+background-color:darkgreen;/*#98bf21;*/
+text-align:center;
+padding:6px;
+text-decoration:none;
+text-transform:uppercase;
+}
+a:hover,a:active
+{
+color:darkgreen;
+background-color:#FFFFFF/*#7A991A;*/
+}
+p
+{
+color: black;	     font-family:'Average', serif;
+text-align:justify;  text-indent:50px; 
+width:50%; padding-top:10px; border:0px; margin:auto; margin-left:auto; margin-right:auto;
+position:relative;
+}
