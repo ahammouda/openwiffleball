@@ -168,7 +168,7 @@ else:
     EMAIL_PORT = 587
     EMAIL_HOST_USER = 'ahammouda'
     EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
-    DEFAULT_FROM_EMAIL = 'wiffleball-support@noreply.com'
+    #DEFAULT_FROM_EMAIL = 'wiffleball-support@noreply.com'
     ALLOWED_HOSTS = 'www.openwiffleball.com'
 
 
