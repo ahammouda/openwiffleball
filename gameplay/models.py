@@ -16,7 +16,7 @@ class Player(models.Model):
     id=models.AutoField(primary_key=True)
     name=models.CharField(max_length=255,blank=False)
     games=models.ManyToManyField(Game)
-    #user=models.ForeignKey(User)
+    user=models.ForeignKey(User)
     def __unicode__(self):
         return self.name
 

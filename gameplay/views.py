@@ -92,7 +92,7 @@ def fill_roster(request):
     else:
         "******************  Non-POST Stuff *********************"
         count_formset=PlayerCountFormSet(prefix='player_count')
-        if Player.objects.all().exists():
+        if Player.objects.filter(user=request.user).exists():
             exist_player_fs=ExistPlayerFormSet(prefix='exist_players')
             template = loader.get_template('gameplay/choose_players.html')
             context = RequestContext(request, {'title': 'Setup Game: Build Roster',
