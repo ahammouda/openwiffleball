@@ -1,1 +1,19 @@
-Whattup?
+{% extends "base.html" %}
+{% load static %}
+{% block body-content %}
+<body>
+  <center>
+    <br>
+    <h2>{{ title }}</h2>
+    <br>
+    Location: {{ location }}<br>
+    Today's Date: {{ today|date:"D d M Y" }}<br>
+    Players:<br>
+    <ul>
+    {% for player in players %}
+        <li>{{ player.name }}</li>
+    {% endfor %}
+    </ul>
+  </center>
+</body>
+{% endblock %}

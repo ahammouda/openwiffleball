@@ -6,8 +6,9 @@ from django.template import Context, loader
 urlpatterns = patterns('',
     #url(r'^', 'base' ),#name='wb_landingpage'),
     url(r'^$', 'gameplay.views.base' ),#name='wb_landingpage'),
-    url(r'^StartGame/$','gameplay.views.start_game',name='start_game'),
-
+    url(r'^StartGame/Location/$','gameplay.views.choose_location',name='location'),
+    url(r'^StartGame/SetupRoster/$','gameplay.views.fill_roster',name='roster'),
+    url(r'^Play/$','gameplay.views.gameplay',name='play_ball'),
 
     
     #url(r'^some_position/$', 'position_detail'),

@@ -1,9 +1,10 @@
 # Create your views here.
-
-from models import Player
+from models import Player, Game
 
 from django import forms
-from forms import LocationForm, ExistingPlayerForm, NewPlayerForm
+from datetime import datetime
+from forms import LocationForm, ExistingPlayerForm, NewPlayerForm, PlayerCountForm
+from utils import add_player
 from django.forms.formsets import formset_factory
 
 from django.template import Context, loader, RequestContext
@@ -23,83 +24,94 @@ def home(request):
     context = RequestContext(request)
     return HttpResponse(template.render(context))
 
+@login_required
 def choose_location(request):
     LocationFormSet=formset_factory(LocationForm)
     if request.method=='POST':
         location_formset=LocationFormSet(request.POST, request.FILES, prefix='location')
         if location_formset.is_valid():
-            #Redirect to Player Count Page
-            a=1
+            for form in location_formset:
+                print form.cleaned_data['location']
+                print datetime.now()
+                g=Game(location=form.cleaned_data['location'],date=datetime.now(),\
+                           user=request.user)
+                g.save()
+            return redirect('gameplay.views.fill_roster')
         else:
             print 'Location ERRORS: '+location_formset.errors
     else:
+        # TODO: Save locations separately and
+        # check to see if they exist
         location_formset=LocationFormSet(prefix='location')
-        context = RequestContext(request,{'title': 'Choose Location',
+        context = RequestContext(request,{'title': 'Setup Game: Location',
                                           'location_formset': location_formset})
-        return render_to_response('gameplay/location_wball.html',context)
-        
+        return render_to_response('gameplay/choose_location.html',context)
 
-def start_game(request):
-    '''
-    if not Player.objects.all().exits():
-        if request.method=='POST':
-            form=PlayerCountForm(request.POST)
-            
-    else:
-        
+@login_required
+def fill_roster(request):
+    PlayerCountFormSet=formset_factory(PlayerCountForm)
     ExistPlayerFormSet=formset_factory(ExistingPlayerForm)
-    NewPlayerFormSet=formset_factory(NewPlayerForm,extra=1)
-
+    NewPlayerFormSet=formset_factory(NewPlayerForm)
     if request.method=='POST':
-        exist_p_formset=ExistPlayerFormSet(request.POST, request.FILES, prefix='exist_players')
-        new_p_formset=NewPlayerFormSet(request.POST, request.FILES, prefix='new_players')
+        num_players=0
+        if 'player_count-INITIAL_FORMS' in request.REQUEST.keys():
+            count_fs=PlayerCountFormSet(request.POST,request.FILES,prefix='player_count')
+            if count_fs.is_valid():
+                for form in count_fs:
+                    num_players=form.cleaned_data['count']
         
-        if new_p_formset.is_valid() \
-                and exist_p_formset.is_valid():
-            a=1
+        if 'exist_players-INITIAL_FORMS' in request.REQUEST.keys():
+            exist_player_fs=ExistPlayerFormSet(request.POST,request.FILES,\
+                                                   prefix='exist_players')
+            if exist_player_fs.is_valid():
+                game=Game.objects.filter(user=request.user).latest('date')
+                for form in exist_player_fs:
+                    players=form.cleaned_data['existing']
+                    for player in players:
+                        pqs=Player.objects.filter(name=player)
+                        for p in pqs:
+                            p.games.add(game)
+        
+        elif 'new_players-INITIAL_FORMS' in request.REQUEST.keys():
+            new_player_fs=NewPlayerFormSet(request.POST,request.FILES,\
+                                               prefix='new_players')
+            if new_player_fs.is_valid():
+                game=Game.objects.filter(user=request.user).latest('date')
+                for form in new_player_fs:
+                    new_guy=form.cleaned_data['new']
+                    p=Player(name=new_guy)
+                    p.save()
+                    p.games.add(game)
+                return redirect('gameplay.views.gameplay')
+        
+        if num_players==0:
+            return redirect('gameplay.views.gameplay')
         else:
-            print 'Location ERRORS: '+location_formset.errors
-            print 'Exist Player ERRORS:  '+exist_p_formset.errors
-            print 'New Player ERRORS:  '+new_p_formset.errors
-            raise forms.ValidationError('ManagementForm data is missing '+
-                                        'or has been tampered with')
-        return redirect('Play/')
+            NewPlayerFormSet=formset_factory(NewPlayerForm,extra=num_players)
+            return add_player(request,NewPlayerFormSet)
     else:
-        exist_p_formset=ExistPlayerFormSet(prefix='exist_players')
-        new_p_formset=NewPlayerFormSet(prefix='new_players')
-        context = RequestContext(request,{'title': 'Setup Game', 
-                                          'location_formset': location_formset,
-                                          'exist_player_fs' : exist_p_formset,
-                                          'new_player_fs' : new_p_formset})
-        
-        return render_to_response('gameplay/startform_wball.html', context)
-    '''
-    pass
+        "******************  Non-POST Stuff *********************"
+        count_formset=PlayerCountFormSet(prefix='player_count')
+        if Player.objects.all().exists():
+            exist_player_fs=ExistPlayerFormSet(prefix='exist_players')
+            template = loader.get_template('gameplay/choose_players.html')
+            context = RequestContext(request, {'title': 'Setup Game: Build Roster',
+                                               'count_formset': count_formset ,
+                                               'exist_player_fs': exist_player_fs})
+        else:
+            template = loader.get_template('gameplay/how_many.html')
+            context = RequestContext(request, {'title': 'Setup Game: Build Roster',
+                                               'count_formset': count_formset})
+        return HttpResponse(template.render(context))
 
+@login_required
+def gameplay(request):
+    g=Game.objects.filter(user=request.user).latest('date')
+    today=g.date
+    location=g.location
+    players=Player.objects.filter(games=g.pk)
     
-def tmp_start(request):
-    LocationFormSet=formset_factory(LocationForm)
-
-    if request.method=='POST':
-        location_formset=LocationFormSet(request.POST, request.FILES, prefix='location')
-        
-        if location_formset.is_valid():
-            a=1
-        else:
-            print 'Location ERRORS: '+location_formset.errors
-            raise forms.ValidationError('ManagementForm data is missing '+
-                                        'or has been tampered with')
-        return redirect('Play/')
-    else:
-        location_formset=LocationFormSet(prefix='location')
-        context = RequestContext(request,{'title': 'Setup Game',
-                                          'location_formset': location_formset})
-        return render_to_response('baseball/formset-table.html', context)
-
-def begin_play(request):
-    pass
-
-#def start_game(request):
-#    template = loader.get_template('gameplay/startform_wball.html')
-#    context = RequestContext(request)
-#    return HttpResponse(template.render(context)) 
+    template = loader.get_template('gameplay/play_wball.html')
+    context = RequestContext(request,{'title':'Play Ball!','today':today,
+                                      'location':location,'players':players})
+    return HttpResponse(template.render(context))

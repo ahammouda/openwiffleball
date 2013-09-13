@@ -14,4 +14,4 @@ class NewPlayerForm(forms.Form):
     new=forms.CharField(max_length=255)
 
 class PlayerCountForm(forms.Form):
-    count=forms.IntegerField(min_value=1)
+    count=forms.IntegerField(min_value=0)
