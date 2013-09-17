@@ -49,6 +49,11 @@ def choose_location(request):
 
 @login_required
 def fill_roster(request):
+    """
+    Write Now sort of hacky logic which takes you through filling out a roster for a particular game.
+    Eventually would like to have all of this on a single dynamic form, rather than a number of separate
+    forms.
+    """
     PlayerCountFormSet=formset_factory(PlayerCountForm)
     ExistPlayerFormSet=formset_factory(ExistingPlayerForm)
     NewPlayerFormSet=formset_factory(NewPlayerForm)
@@ -77,18 +82,28 @@ def fill_roster(request):
                                                prefix='new_players')
             if new_player_fs.is_valid():
                 game=Game.objects.filter(user=request.user).latest('date')
+                count=0
                 for form in new_player_fs:
                     new_guy=form.cleaned_data['new']
-                    p=Player(name=new_guy)
-                    p.save()
-                    p.games.add(game)
-                return redirect('gameplay.views.gameplay')
+                    if Player.objects.filter(name=new_guy,user=request.user).exists():
+                        err_player=form.cleaned_data['new']
+                    else:
+                        p=Player(name=new_guy,user=request.user)
+                        p.save()
+                        p.games.add(game)
+                        return redirect('gameplay.views.gameplay')
+                    count+=1
+                if err_player:
+                    NewPlayerFormSet=formset_factory(NewPlayerForm,extra=count)
+                    message=err_player+" is already on your roster."\
+                        "  You can only add new players"
+                    return add_player(request,NewPlayerFormSet,message)
         
         if num_players==0:
             return redirect('gameplay.views.gameplay')
         else:
             NewPlayerFormSet=formset_factory(NewPlayerForm,extra=num_players)
-            return add_player(request,NewPlayerFormSet)
+            return add_player(request,NewPlayerFormSet,None)
     else:
         "******************  Non-POST Stuff *********************"
         count_formset=PlayerCountFormSet(prefix='player_count')

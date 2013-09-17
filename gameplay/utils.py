@@ -7,11 +7,12 @@ from django.template import Context, loader, RequestContext
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, redirect
 
-def add_player(request,Formset):
+def add_player(request,Formset,message):
     new_player_fs=Formset(prefix='new_players')
     template = loader.get_template('gameplay/add_players.html')
     context = RequestContext(request, {'title': 'Setup Game: Build Roster',
-                                       'new_player_fs': new_player_fs})
+                                       'new_player_fs': new_player_fs,
+                                       'message': message})
     return HttpResponse(template.render(context))
 
 def start_game(request):

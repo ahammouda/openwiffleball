@@ -14,7 +14,7 @@ BASE_DIR = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..'))
 SITE_NAME = 'OPEN-WIFFLEBALL'
 
 if os.environ['LOCAL_MACHINE']=='false':
-    DEBUG = False
+    DEBUG = True
     DATABASE_URL = os.environ['DATABASE_URL']
     DATABASES={
         'default' : dj_database_url.parse(DATABASE_URL)
@@ -169,7 +169,7 @@ else:
     EMAIL_PORT = 587
     EMAIL_HOST_USER = 'ahammouda'
     EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
-    #DEFAULT_FROM_EMAIL = 'wiffleball-support@noreply.com'
+    DEFAULT_FROM_EMAIL = 'wiffleball-support@openwiffleball.com'
 
 
 if os.environ['LOCAL_MACHINE']=='true':
