@@ -170,6 +170,8 @@ else:
     EMAIL_HOST_USER = 'ahammouda'
     EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
     DEFAULT_FROM_EMAIL = 'wiffleball-support@openwiffleball.com'
+    EMAIL_SUBJECT_PREFIX = '[openwiffleball.com]'
+    SITE_URL = 'openwiffleball.com'
 
 
 if os.environ['LOCAL_MACHINE']=='true':
