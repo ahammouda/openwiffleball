@@ -156,7 +156,7 @@ TEMPLATE_DIRS = (
 
 ACCOUNT_ACTIVATION_DAYS=2 
 
-DEFAULT_FROM_EMAIL = 'wiffleball-support@openwiffleball.com'
+DEFAULT_FROM_EMAIL = 'support@openwiffleball.com'
 EMAIL_SUBJECT_PREFIX = '[openwiffleball.com]'
 SITE_URL = 'openwiffleball.com'
     
