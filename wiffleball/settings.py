@@ -174,7 +174,7 @@ else:
     EMAIL_PORT = 587
     EMAIL_HOST_USER = 'ahammouda'
     EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
-    #DEFAULT_FROM_EMAIL = 'support@openwiffleball.com'
+    DEFAULT_FROM_EMAIL = 'adamhammouda3@gmail.com'
     #EMAIL_SUBJECT_PREFIX = '[openwiffleball.com]'
     SITE_URL = 'openwiffleball.com'
 
