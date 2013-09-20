@@ -75,7 +75,7 @@ TIME_ZONE = 'America/Chicago'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
 
-SITE_ID = 1
+SITE_ID = 2
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
@@ -157,25 +157,18 @@ TEMPLATE_DIRS = (
 ACCOUNT_ACTIVATION_DAYS=2 
 
 DEFAULT_FROM_EMAIL = 'support@openwiffleball.com'
-#EMAIL_SUBJECT_PREFIX = '[openwiffleball.com]'
+EMAIL_SUBJECT_PREFIX = '[openwiffleball.com]'
 SITE_URL = 'openwiffleball.com'
-    
+
 ########## EMAIL CONFIGURATION
 if os.environ['LOCAL_MACHINE']=='true':
-
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    #EMAIL_HOST='localhost'
-    #EMAIL_PORT=1023
-    #EMAIL_HOST_USER='adamhammouda3'
-    #EMAIL_HOST_PASSWORD='password'
 else:
     EMAIL_USE_TLS = True
     EMAIL_HOST = 'smtp.sendgrid.net'
     EMAIL_PORT = 587
     EMAIL_HOST_USER = 'ahammouda'
     EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
-    #EMAIL_SUBJECT_PREFIX = '[openwiffleball.com]'
-    SITE_URL = 'openwiffleball.com'
 
 
 if os.environ['LOCAL_MACHINE']=='true':
