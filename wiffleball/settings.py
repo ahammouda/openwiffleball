@@ -155,9 +155,14 @@ TEMPLATE_DIRS = (
 )
 
 ACCOUNT_ACTIVATION_DAYS=2 
+
+DEFAULT_FROM_EMAIL = 'wiffleball-support@openwiffleball.com'
+EMAIL_SUBJECT_PREFIX = '[openwiffleball.com]'
+SITE_URL = 'openwiffleball.com'
     
 ########## EMAIL CONFIGURATION
 if os.environ['LOCAL_MACHINE']=='true':
+
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
     #EMAIL_HOST='localhost'
     #EMAIL_PORT=1023
@@ -169,7 +174,7 @@ else:
     EMAIL_PORT = 587
     EMAIL_HOST_USER = 'ahammouda'
     EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
-    DEFAULT_FROM_EMAIL = 'wiffleball-support@openwiffleball.com'
+    DEFAULT_FROM_EMAIL = 'support@openwiffleball.com'
     EMAIL_SUBJECT_PREFIX = '[openwiffleball.com]'
     SITE_URL = 'openwiffleball.com'
 
