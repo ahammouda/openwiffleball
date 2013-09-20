@@ -1,5 +1,6 @@
 # Create your views here.
 from models import Player, Game
+import string
 
 from django import forms
 from datetime import datetime
@@ -83,6 +84,7 @@ def fill_roster(request):
             if new_player_fs.is_valid():
                 game=Game.objects.filter(user=request.user).latest('date')
                 count=0
+                err_players=list()
                 for form in new_player_fs:
                     new_guy=form.cleaned_data['new']
                     if Player.objects.filter(name=new_guy,user=request.user).exists():
@@ -92,12 +94,15 @@ def fill_roster(request):
                         p.save()
                         p.games.add(game)
                     count+=1
-                if err_players:
+                n_redundant=len(err_players)
+                if n_redundant>0:
                     NewPlayerFormSet=formset_factory(NewPlayerForm,extra=count)
                     message=""
-                    if len(err_players)>1:
-                        message=[message+player+", " for player in err_players]
-                        message=message+"are"
+                    if n_redundant>1:
+                        print err_players[0]
+                        message=[string.join([str(message),str(player),", "]) for player in err_players]
+                        
+                        message=string.join([str(message),"are"]," ")
                     else: message=message+err_players[0]+" is"
                     message=message+" already on your roster."\
                         "  You can only add new players in this step."
