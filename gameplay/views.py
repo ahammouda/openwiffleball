@@ -86,18 +86,24 @@ def fill_roster(request):
                 for form in new_player_fs:
                     new_guy=form.cleaned_data['new']
                     if Player.objects.filter(name=new_guy,user=request.user).exists():
-                        err_player=form.cleaned_data['new']
+                        err_players.append(form.cleaned_data['new'])
                     else:
                         p=Player(name=new_guy,user=request.user)
                         p.save()
                         p.games.add(game)
-                        return redirect('gameplay.views.gameplay')
                     count+=1
-                if err_player:
+                if err_players:
                     NewPlayerFormSet=formset_factory(NewPlayerForm,extra=count)
-                    message=err_player+" is already on your roster."\
-                        "  You can only add new players"
+                    message=""
+                    if len(err_players)>1:
+                        message=[message+player+", " for player in err_players]
+                        message=message+"are"
+                    else: message=message+err_players[0]+" is"
+                    message=message+" already on your roster."\
+                        "  You can only add new players in this step."
                     return add_player(request,NewPlayerFormSet,message)
+                else:
+                    return redirect('gameplay.views.gameplay')
         
         if num_players==0:
             return redirect('gameplay.views.gameplay')
