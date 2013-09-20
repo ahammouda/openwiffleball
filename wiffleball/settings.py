@@ -14,7 +14,7 @@ BASE_DIR = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..'))
 SITE_NAME = 'OPEN-WIFFLEBALL'
 
 if os.environ['LOCAL_MACHINE']=='false':
-    DEBUG = True
+    DEBUG = False
     DATABASE_URL = os.environ['DATABASE_URL']
     DATABASES={
         'default' : dj_database_url.parse(DATABASE_URL)
