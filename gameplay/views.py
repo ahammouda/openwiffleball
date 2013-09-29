@@ -15,10 +15,11 @@ from django.shortcuts import render_to_response, redirect
 from django.contrib.auth.decorators import login_required
 
 def base(request):
+    template = loader.get_template('gameplay/landing_wball.html')
     if request.user.is_authenticated():
-        return redirect('gameplay.views.home')
+        context = RequestContext(request, {'logged_in': True})
+        return HttpResponse(template.render(context))
     else:
-        template = loader.get_template('gameplay/landing_wball.html')
         context = RequestContext(request, {'logged_in': False})
         return HttpResponse(template.render(context))
 

@@ -2,20 +2,19 @@
 {% load static %} 
 {% block body-content %}
 <hr>
-
+{% if not logged_in %}
 <div class="jumbotron">
-        <h1>Hell Yeah Wiffleball!</h1>
-        <p class="lead">Are you ready to test your meddle?</p>
-	<a class="btn btn-large btn-success" href="{% url 'registration_register' %}">Create An Account</a>
-	<br>
-	<br>
-	<br>
-	<br>
-	<p class="lead">Already Have an Account?</p>
-        <a class="btn btn-large btn-success" href="{% url 'auth_login' %}">Login</a>
-
-      </div>
-
+  <h1>Hell Yeah Wiffleball!</h1>
+  <p class="lead">Are you ready to test your meddle?</p>
+  <a class="btn btn-large btn-success" href="{% url 'registration_register' %}">Create An Account</a>
+  <br>
+  <br>
+  <br>
+  <br>
+  <p class="lead">Already Have an Account?</p>
+  <a class="btn btn-large btn-success" href="{% url 'auth_login' %}">Login</a>  
+</div>
+{% endif %}
       <hr>
       
       <div class="row-fluid marketing">

@@ -12,9 +12,9 @@ urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'wiffleball.views.home', name='home'),
     # url(r'^admin/', include('django.contrib.admin.urls')),
+    url(r'^', include('gameplay.urls')),
     url(r'^accounts/', include('registration.backends.default.urls') ),
     url(r'^accounts/profile/$','gameplay.views.home',name='home'),
-    url(r'^', include('gameplay.urls')),
     
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
