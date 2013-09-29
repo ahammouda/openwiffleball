@@ -13,12 +13,12 @@ urlpatterns = patterns('',
     # url(r'^$', 'wiffleball.views.home', name='home'),
     # url(r'^admin/', include('django.contrib.admin.urls')),
     url(r'^accounts/', include('registration.backends.default.urls') ),
-    url(r'^accounts/profile/$','gameplay.views.home'),
+    url(r'^accounts/profile/$','gameplay.views.home',name='home'),
     url(r'^', include('gameplay.urls')),
     
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
+    
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
 )
@@ -30,6 +30,10 @@ urlpatterns += patterns('',
                            auth_views.login,
                            {'template_name': 'registration/login.html'},
                            name='auth_login'),
+                       url(r'^logout/$',
+                           auth_views.logout,
+                           {'template_name':'registration/logout.html'},
+                           name='auth_logout'),
                        url(r'^logout/$',
                            auth_views.logout,
                            {'template_name': 'registration/logout.html'},

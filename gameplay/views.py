@@ -15,14 +15,26 @@ from django.shortcuts import render_to_response, redirect
 from django.contrib.auth.decorators import login_required
 
 def base(request):
-    template = loader.get_template('gameplay/landing_wball.html')
-    context = RequestContext(request)
-    return HttpResponse(template.render(context))
+    if request.user.is_authenticated():
+        return redirect('gameplay.views.home')
+    else:
+        template = loader.get_template('gameplay/landing_wball.html')
+        context = RequestContext(request, {'logged_in': False})
+        return HttpResponse(template.render(context))
+
+def contribute(request):
+    template = loader.get_template('gameplay/contribute_wball.html')
+    if request.user.is_authenticated():
+        context = RequestContext(request, {'logged_in': True })
+        return HttpResponse(template.render(context))
+    else:
+        context = RequestContext(request, {'logged_in': False})
+        return HttpResponse(template.render(context))
 
 @login_required
 def home(request):
     template = loader.get_template('gameplay/home_wball.html')
-    context = RequestContext(request)
+    context = RequestContext(request,{'logged_in': True})
     return HttpResponse(template.render(context))
 
 @login_required
@@ -45,14 +57,16 @@ def choose_location(request):
         # check to see if they exist
         location_formset=LocationFormSet(prefix='location')
         context = RequestContext(request,{'title': 'Setup Game: Location',
-                                          'location_formset': location_formset})
+                                          'location_formset': location_formset,
+                                          'logged_in': True})
         return render_to_response('gameplay/choose_location.html',context)
 
 @login_required
 def fill_roster(request):
     """
-    Write Now sort of hacky logic which takes you through filling out a roster for a particular game.
-    Eventually would like to have all of this on a single dynamic form, rather than a number of separate
+    Write Now sort of hacky logic which takes you through filling out 
+    a roster for a particular game.  Eventually would like to have
+    all of this on a single dynamic form, rather than a number of separate
     forms.
     """
     PlayerCountFormSet=formset_factory(PlayerCountForm)
@@ -116,22 +130,53 @@ def fill_roster(request):
             NewPlayerFormSet=formset_factory(NewPlayerForm,extra=num_players)
             return add_player(request,NewPlayerFormSet,None)
     else:
-        "******************  Non-POST Stuff *********************"
+        "******************  Non-POST Request *********************"
         count_formset=PlayerCountFormSet(prefix='player_count')
-        if Player.objects.filter(user=request.user).exists():
+        if Player.objects.filter(user=request.user).count()>=1:
             exist_player_fs=ExistPlayerFormSet(prefix='exist_players')
             template = loader.get_template('gameplay/choose_players.html')
             context = RequestContext(request, {'title': 'Setup Game: Build Roster',
                                                'count_formset': count_formset ,
-                                               'exist_player_fs': exist_player_fs})
+                                               'exist_player_fs': exist_player_fs,
+                                               'logged_in': True})
         else:
             template = loader.get_template('gameplay/how_many.html')
             context = RequestContext(request, {'title': 'Setup Game: Build Roster',
-                                               'count_formset': count_formset})
+                                               'count_formset': count_formset,
+                                               'logged_in': True})
         return HttpResponse(template.render(context))
 
 @login_required
+def player_stats(request):
+    """
+    List Player attributes that are editable (right now just name).
+    as well as there computed stats on Ks and Os etc (uneditable).
+    """
+    players=Player.objects.filter(user=request.user)
+    template = loader.get_template('gameplay/player_stats_wball.html')
+    context = RequestContext(request,{'title':'Your Roster',
+                                      'players':players,
+                                      'logged_in': True})
+    return HttpResponse(template.render(context))
+
+@login_required
+def game_history(request):
+    """
+    List Every game.  Order by date (most recent to oldest)
+    """
+    games=Game.objects.filter(user=request.user)
+    template = loader.get_template('gameplay/game_stats_wball.html')
+    context = RequestContext(request,{'title':'Your Roster',
+                                      'games':games,
+                                      'logged_in': True})
+    return HttpResponse(template.render(context))
+    
+@login_required
 def gameplay(request):
+    """
+    Meet of the app should go here.  We want to make the 
+    play_wball.html very easily updated with ajax, etc.
+    """
     g=Game.objects.filter(user=request.user).latest('date')
     today=g.date
     location=g.location
@@ -139,5 +184,7 @@ def gameplay(request):
     
     template = loader.get_template('gameplay/play_wball.html')
     context = RequestContext(request,{'title':'Play Ball!','today':today,
-                                      'location':location,'players':players})
+                                      'location':location,'players':players,
+                                      'logged_in': True})
     return HttpResponse(template.render(context))
+

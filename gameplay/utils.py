@@ -12,7 +12,8 @@ def add_player(request,Formset,message):
     template = loader.get_template('gameplay/add_players.html')
     context = RequestContext(request, {'title': 'Setup Game: Build Roster',
                                        'new_player_fs': new_player_fs,
-                                       'message': message})
+                                       'message': message,
+                                       'logged_in': True})
     return HttpResponse(template.render(context))
 
 def start_game(request):

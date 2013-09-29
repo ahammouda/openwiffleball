@@ -9,10 +9,10 @@ urlpatterns = patterns('',
     url(r'^StartGame/Location/$','gameplay.views.choose_location',name='location'),
     url(r'^StartGame/SetupRoster/$','gameplay.views.fill_roster',name='roster'),
     url(r'^Play/$','gameplay.views.gameplay',name='play_ball'),
-
+    url(r'^Contribute/','gameplay.views.contribute',name='contribute'),
+    url(r'^Roster/','gameplay.views.player_stats',name='player_stats'),
+    url(r'^GameHistory/','gameplay.views.game_history',name='game_history'),
     
-    #url(r'^some_position/$', 'position_detail'),
-    #url(r'^(?P<accomplishment_id>\d+)/$', 'accomplishment_detail'),
 )
 
 '''

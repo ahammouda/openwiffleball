@@ -15,3 +15,16 @@ class NewPlayerForm(forms.Form):
 
 class PlayerCountForm(forms.Form):
     count=forms.IntegerField(min_value=0)
+
+class PitcherOrderForm(forms.Form):
+    pitcher=forms.ChoiceField(choices=Player.objects.all(),
+                              widget=forms.RadioSelect()
+                              )
+    position=forms.IntegerField(min_value=0)
+    
+class BatterOrderForm(forms.Form):
+    batter=forms.ChoiceField(choices=Player.objects.all(),
+                             widget=forms.RadioSelect()
+                             )
+    position=forms.IntegerField(min_value=0)
+    

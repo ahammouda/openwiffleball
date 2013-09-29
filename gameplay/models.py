@@ -32,9 +32,25 @@ class Inning(models.Model):
     def __unicode__(self):
         return 'Inning #: '+self.number+'; Pitcher: '+pitcher__name
 
-class Score(models.Model):
+class BatterScore(models.Model):
     inning=models.ForeignKey('Inning')
-    batter=models.ForeignKey('Player')
+    # How many times has this player been at bat, 
+    # inclusive of this time.
+    turn=models.IntegerField(null=False)
+    player=models.ForeignKey('Player')
+    
+    # If True => score=1.
+    walk=models.BooleanField(default=False)
+    # (W=1) ,1,2,3,4 
     score=models.IntegerField(null=False)
     def __unicode__(self):
         return self.score
+
+class PitcherScore(models.Model):
+    inning=models.ForeignKey('Inning')
+    player=models.ForeignKey('Player')
+
+    # ERA = (# At bats)/(# Strikeouts (Ks))
+    era=models.IntegerField(null=False)
+    def __unicode__(self):
+        return self.era
