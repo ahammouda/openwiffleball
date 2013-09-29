@@ -11,7 +11,8 @@
         You have played no games.  <a href="{% url 'location' %}">Start a game now!</a>
     {% else %}
         {% for game in games %}
-            {{ game }}
+            {{ game.location }}
+            {{ game.date }}
         {% endfor %}
     {% endif%}
   </center>

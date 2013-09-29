@@ -12,7 +12,7 @@
         Start a game</a> in order to add new players.
     {% else %}
         {% for player in players %}
-            {{ player }}
+            {{ player.name }}
         {% endfor %}
     {% endif %}
   </center>
