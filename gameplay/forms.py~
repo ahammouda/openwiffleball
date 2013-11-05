@@ -1,0 +1,71 @@
+
+from django import forms
+from django.forms.models import BaseModelFormSet
+from gameplay.models import Player
+#from django.forms.widgets import CheckboxSelectMultiple
+
+class LocationForm(forms.Form):
+    location=forms.CharField(max_length=255)
+    
+class ExistingPlayerForm(forms.Form):
+    existing=forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(),
+                                            queryset=Player.objects.none()
+                                            )
+    def __init__(self, *args, **kwargs):
+        user_filter=kwargs.pop('user_filter')
+        super(ExistingPlayerForm, self).__init__(*args, **kwargs)
+        self.fields['existing'].queryset=Player.objects.filter(user=user_filter)
+        
+class NewPlayerForm(forms.Form):
+    new=forms.CharField(max_length=255)
+
+class PlayerCountForm(forms.Form):
+    count=forms.IntegerField(min_value=0)
+
+class PitcherOrderForm(forms.ModelForm):
+    position=forms.IntegerField(min_value=0)
+    pitchers=forms.ModelChoiceField(queryset=Player.objects.none(),
+                                    empty_label="Choose Pitcher")
+    class Meta:
+        model=Player
+        exclude=('id',
+                 'games',
+                 'user',
+                 'name')
+        #widgets={
+        #    'pitchers':forms.ChoiceField(choices=choices)
+        #    }
+        
+    #def __init__(self, *args, **kwargs):
+    #    super(PitcherOrderForm, self).__init__(*args, **kwargs)
+    #    self.fields['name'].label = 'pitchers'
+        
+    
+
+class BatterOrderForm(forms.Form):
+    position=forms.IntegerField(min_value=0)
+    #batters=forms.ModelChoiceField(queryset=Player.objects.none(),
+    #                               empty_label="Choose Batter")
+    class Meta:
+        model=Player
+        exclude=('id',
+                 'games',
+                 'user')
+        #widgets={
+        #    'name':forms.ChoiceField(choices=choices)
+        #    }
+    #def __init__(self, *args, **kwargs):
+    #    super(BatterOrderForm, self).__init__(*args, **kwargs)
+    #    #self.fields['name'].widget = forms.SelectField(choices=cur_choices)
+    #    #self.fields['name'].label = 'batters'
+        
+    #def update_widget(self. *args, **kwargs):
+        
+
+class PitcherOrderFormSet(BaseModelFormSet):
+    def __init__(self, *args, **kwargs):
+        super(PitcherOrderFormSet, self).__init__(*args, **kwargs)
+        for index,form in enumerate(self.forms):
+            form.fields['pitchers'].queryset=self.queryset
+            print "Hey:  ", form.fields['pitchers'].queryset
+        

@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extrahead %}
+<script type="text/javascript" src="{% static "gameplay/js/update_play.js" %}"></script>
+{% endblock %}
+{% block body-content %}
+<div class="container" ng-controller="updateAtBat">
+  <div class="row">
+    <div class="span4">
+
+      <div class="container">
+	<div class="span2">
+	  <br>
+	  <h2>{{ title }}</h2>
+	  <br>
+	  Location: {{ location }}<br>
+	  Today's Date: {{ today|date:"D d M Y" }}<br>
+	  <br>
+	  <b>Inning:     </b>{% verbatim %}{{inningNum}}{% endverbatim %}<br>
+	  <b>Strike Outs: </b>{% verbatim %}{{numSO}}{% endverbatim %}
+	</div>
+	<div class="span3">
+	  <h4>Current Field</h4>
+	  <table class="table table-hover">
+	    <tr>
+	      <th>Bases</th>
+	      <th>Filled?</th>
+	    </tr>
+	    <tr>
+	      <td>1</td>
+	      <td>{% verbatim %}{{firstBase}}{% endverbatim %}</td>
+	    </tr>
+	    <tr>
+	      <td>2</td>
+	      <td>{% verbatim %}{{secondBase}}{% endverbatim %}</td>
+	    </tr>
+	    <tr>
+	      <td>3</td>
+	      <td>{% verbatim %}{{thirdBase}}{% endverbatim %}</td>
+	    </tr>
+	  </table>
+	</div><!-- End span3 -->
+      </div> <!-- End row -->
+      
+      <!-- ********* ***********-->
+      <div class="container"> 
+	<!-- **************  Pitcher Records **************** -->
+	<div class="span2"> 
+	  <br>
+	  <br>
+	  <h4>Pitcher Records</h4>
+	  <table class="table table-hover">
+	    <tr>
+	      <th>Pitcher</th>
+	      <th>ERA</th>
+	    </tr>
+	    {% for player in players %}
+	    <tr>
+	      <td>{{ player.name }}</td>
+	      <td>0</td>
+	    </tr>
+	    {% endfor %}
+	  </table>
+	</div> <!-- End span2 -->
+	
+	<!-- **************  Batter Records **************** -->
+	<div class="span3"> 
+	  <br>
+	  <br>
+	  <h4>Batter Records</h4>
+	  <table class="table table-hover">
+	    <tr>
+	      <th>Batter</th>
+	      <th>Turn</th>
+	      <th>Hits:SOs</th>
+	    </tr>
+	    {% for player in players %}
+	    <tr>
+	      <td>{{ player.name }}</td>
+	      <td>1</td>
+	      <td>0/0</td>
+	    </tr>
+	    {% endfor %}
+	  </table>
+	</div> <!-- End span3 -->
+      </div> <!-- End row -->
+    </div> <!-- End span4 -->
+    
+    <!-- **************  State of Game **************** -->
+    <!-- Update score in the records table conditionally -->
+    <div class="span4 offset2">
+      <h4>At Bat</h4>
+      <table class="table table-hover">
+	<tr>
+	  <th>Balls</th>
+	  <td><center>{% verbatim %}{{ballCount}}{% endverbatim %}<center></td>
+	  <td><button class="btn btn-success" ng-click="upBall()">
+	      <i class="icon-plus"></i>  Ball</button></td>
+	  <td><button class="btn btn-danger" ng-click="downBall()">
+	      <i class="icon-minus"></i> Undo</button></td>
+	</tr>
+	<tr>
+	  <th>Strikes</th>
+	  <td><center>{% verbatim %}{{strikeCount}}{% endverbatim %}<center></td>
+	  <td><button class="btn btn-success" ng-click="upStrike()">
+	      <i class="icon-plus"></i> Strike</button></td>
+	  <td><button class="btn btn-danger" ng-click="downStrike()">
+	      <i class="icon-minus"></i> Undo</button></td>
+	</tr>
+	<tr>
+	  <th>Single</th>
+	  <td></td>
+	  <td></td>
+	  <td align="justify"><button class="btn btn-success" ng-click="single()">
+	      Score!</td>
+	</tr>
+	<tr>
+	  <th>Double</th>
+	  <td></td>
+	  <td></td>
+	  <td align="justify"><button class="btn btn-success" ng-click="double()">
+	      Score!!</button></td>
+	</tr>
+	<tr>
+	  <th>Triple</th>
+	  <td></td>
+	  <td></td>
+	  <td align="justify"><button class="btn btn-success" ng-click="triple()">
+	      Score!!!</button></td>
+	</tr>
+	<tr>
+	  <th>Homer</th>
+	  <td></td>
+	  <td></td>
+	  <td align="justify"><button class="btn btn-success" ng-click="triple()">
+	      Score!!!!</button></td>
+	</tr>
+      </table>
+    </div> <!-- End span4 -->
+    </div> <!-- End row -->
+	
+    
+  
+</div> <!-- End container -->
+{% endblock %}

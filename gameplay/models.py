@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 
 from datetime import datetime
 
-
 class Game(models.Model):
     id=models.AutoField(primary_key=True)
     date=models.DateTimeField(null=False, default=datetime.now())
@@ -22,7 +21,23 @@ class Player(models.Model):
         return self.name
     
     class Meta:
-        unique_together = ("name","user")
+        unique_together = (("name","user"),)
+
+class BatterOrder(models.Model):
+    game=models.ForeignKey('Game')
+    qposition=models.IntegerField(null=False)
+    player=models.ForeignKey('Player')
+    
+    def __unicode__(self):
+        return 'Position: '+self.qposition
+
+class PitcherOrder(models.Model):
+    game=models.ForeignKey('Game')
+    qposition=models.IntegerField(null=False)
+    player=models.ForeignKey('Player')
+    
+    def __unicode__(self):
+        return 'Position: '+self.qposition
 
 class Inning(models.Model):
     id=models.AutoField(primary_key=True)
@@ -38,7 +53,7 @@ class BatterScore(models.Model):
     # inclusive of this time.
     turn=models.IntegerField(null=False)
     player=models.ForeignKey('Player')
-    
+
     # If True => score=1.
     walk=models.BooleanField(default=False)
     # (W=1) ,1,2,3,4 
@@ -49,7 +64,7 @@ class BatterScore(models.Model):
 class PitcherScore(models.Model):
     inning=models.ForeignKey('Inning')
     player=models.ForeignKey('Player')
-
+    
     # ERA = (# At bats)/(# Strikeouts (Ks))
     era=models.IntegerField(null=False)
     def __unicode__(self):

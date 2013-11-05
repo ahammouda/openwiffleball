@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body-content %}
+<div class="jumbotron">
+  <h2>Welcome {{ user.username }}</h2>
+  <p class="lead">Ready for another game?</p>
+  <a class="btn btn-large btn-success" href="{% url 'location' %}">Start Game!</a>
+</div>
+{% endblock %}

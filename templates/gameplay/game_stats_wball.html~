@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body-content %}
+<body>
+  <br>
+  <br>
+  <br>
+  <center>
+    <h2>Game History For {{ user.username }}</h2>
+    {% if not games.0 %}
+        You have played no games.  <a href="{% url 'location' %}">Start a game now!</a>
+    {% else %}
+        {% for game in games %}
+            {{ game.location }}
+            {{ game.date }}
+        {% endfor %}
+    {% endif%}
+  </center>
+</body>
+{% endblock %}

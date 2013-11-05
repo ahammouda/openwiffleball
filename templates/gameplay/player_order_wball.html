@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body-content %}
+<body>
+  <center>
+    <br>
+    <h2>{{ title }}</h2>
+    <br>
+    <br>
+    <p>
+      If Player is not performing either pitching or batting, set her/his order to 0.
+    </p>
+    <div>
+      <div class="entry">
+	<form method="post" action="">{% csrf_token %}
+	  <!-- N.B Placing these calls to management_form before the
+	       <table> tag seems to be necessary. DONT DELETE COMMENT.
+		 NEVER KNOW WHEN YOU'LL WANT TO REFACTOR. -->
+	  {{ p_order_formset.management_form }}
+	  {{ b_order_formset.management_form }}
+	  <h4>Decide Order of Pitching</h4>
+	  <table id="id_p_order_formset" border="0" cellpadding="0">
+	    <tbody>
+	      {% for form in p_order_formset.forms %}
+	      <tr id="{{ form.prefix }}-row" class="form-container">
+		<td>{{ form }}</td>
+	      </tr>
+	      {% endfor %}
+	    </tbody>
+	  </table>
+	  
+	  <h4>Decide Order of Batting</h4>
+	  <table id="id_b_order_formset" border="0" cellpadding="0">
+	    <tbody>
+	      {% for form in b_order_formset.forms %}
+	      <tr id="{{ form.prefix }}-row" class="form-container">
+		<td>{{ form }}</td>
+	      </tr>
+	      {% endfor %}
+	    </tbody>
+	  </table>
+	  <p>
+	    <input type='submit' value='Submit'>
+	  </p>
+
+	</form>
+      </div>
+    </div>
+  </center>
+</body>
+</html>
+{% endblock %}

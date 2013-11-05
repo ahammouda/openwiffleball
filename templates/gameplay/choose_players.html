@@ -13,11 +13,7 @@
       <h4>Choose Existing Players For Today's Game!</h4>
       <table id="id_exist_player_formset" border="0" cellpadding="0">
 	<tbody>
-	  {% for form in exist_player_fs.forms %}
-	  <tr id="{{ form.prefix }}-row" class="form-container">
-	    <td>{{ form }}</td>
-	  </tr>
-	  {% endfor %}
+	  {{ exist_player_fs.as_table }}
 	</tbody>
       </table>
       

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body-content %}
+<body>
+  <br>
+  <br>
+  <br>
+  <center>
+    <h2>Player Stats For {{ user.username }}</h2>
+    {% if not players.0 %}
+        You have no players in your roster.  <a href="{% url 'location' %}">
+        Start a game</a> in order to add new players.
+    {% else %}
+        {% for player in players %}
+            {{ player.name }}
+        {% endfor %}
+    {% endif %}
+  </center>
+</body>
+{% endblock %}

@@ -1,0 +1,55 @@
+// Logic Will proceed as follows:
+
+// Page loads, with given batter/pitcher turn variable
+
+// Branch according to stikeout, walk, 1, 2, 3, 4
+
+// if strikeout:
+// --> Increment strikeouts by 1
+// --> Send score, battern turn, inning
+// if walk:
+// --> send score, batter turn, inning
+function updateAtBat($scope){
+    $scope.strikeCount=0;
+    $scope.ballCount=0;
+    $scope.inningNum=1;
+    $scope.numSO=0;
+    
+    $scope.firstBase='';
+    $scope.secondBase='';
+    $scope.thirdBase='';
+    
+    $scope.upStrike = function(){
+	
+	return $scope.strikeCount++;
+    };
+    $scope.downStrike = function(){
+	return $scope.strikeCount--;
+    };
+    
+    $scope.upBall = function(){
+	$scope.ballCount++;
+	if ($scope.ballCount>=4){
+	    $scope.firstBase='YES'//'<i class="icon-ok"></i>';
+	    return $scope.ballCount=0;
+	} else
+	    return $scope.ballCount;
+    };
+    
+    $scope.downBall = function(){
+	return $scope.ballCount--;
+    };
+    
+    $scope.single = function(){
+	
+    };
+    
+    //$scope.2ouble = function(){
+    //
+    //};
+    
+    //$scope.triple = function(){
+    //};
+       
+    
+}

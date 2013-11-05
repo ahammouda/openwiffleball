@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body-content %}
+<body>
+  <center>
+    <br>
+    <h2>{{ title }}</h2>
+    <br>
+    <h4>Choose Location:</h4>
+    <br>
+<div>
+  <div class="entry">
+    <form method="post" action="">{% csrf_token %}
+      <!-- N.B Placing these calls to management_form before the <table> tag seems to be necessary -->
+      
+      <table id="id_location_formset" border="0" cellpadding="0">
+	<tbody>
+	  {% for form in location_formset.forms %}
+	  <tr id="{{ form.prefix }}-row" class="form-container">
+	    <td>{{ form }}</td>
+	  </tr>
+	  {% endfor %}
+	</tbody>
+      </table>
+      <p>
+	{{ location_formset.management_form }}
+	<input type='submit' value='Submit'>
+      </p>
+      
+    </form>
+  </div>
+</div>
+  </center>
+</body>
+</html>
+{% endblock %}

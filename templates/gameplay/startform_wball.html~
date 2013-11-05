@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extrahead %}
+<script type="text/javascript">
+  $(function() {
+  $("#id_newPlayFormset tbody tr").formset({
+       formCssClass: 'dynamic-player-formset',
+       prefix: "{{ new_player_fs.prefix }}",
+     });
+  })
+</script>
+<style type="text/css">
+    .add-row {
+        padding-left:18px;
+        background:url({% static "images/add.png" %}) no-repeat left center;
+    }
+    .delete-row {
+        float:right;
+        display:block;
+        margin-left:4px;
+        padding-left:18px;
+        background:url({% static "images/delete.png" %}) no-repeat left center;
+        width:16px;
+        height:16px;
+    }
+    .dynamic-player-formset th {
+        text-align:right;
+        font-weight:bold;
+    }
+    .dynamic-player-formset td span img {
+        vertical-align:middle;
+        border:0;
+    }
+</style>
+{% endblock %}
+{% block body-content %}
+<body>
+  <center>
+    <br>
+    <h2>{{ title }}</h2>
+    <br>
+    <h4>Choose Location:</h4>
+    <br>
+<div>
+  <div class="entry">
+    <form method="post" action=""><!--{% csrf_token %}-->
+      <!-- N.B Placing these calls to management_form before the <table> tag seems to be necessary -->
+      
+      <table id="id_newPlayFormset" border="0" cellpadding="0">
+	<tbody>
+	  {% for form in new_player_fs.forms %}
+	  <tr id="{{ form.prefix }}-row" class="form-container">
+	    <td>{{ form }}</td>
+	  </tr>
+	  {% endfor %}
+	</tbody>
+      </table>
+      <p>
+	{{ new_player_fs.management_form }}
+	<input type='submit' value='Submit'>
+      </p>
+      
+    </form>
+  </div>
+</div>
+  </center>
+</body>
+</html>
+{% endblock %}
+<!--
+      <table id="locationFormset" border="0" cellpadding="0">
+	<tbody>
+	  {% for form in location_formset.forms %}
+	  <tr id="{{ form.prefix }}-row" class="form-container">
+	    {{ form }}
+	  </tr>
+	  {% endfor %}
+	</tbody>
+      </table>
+      <br>
+      <h4>Choose Players:</h4>
+      
+      <table id="existPlayFormset" border="0" cellpadding="0">
+	<tbody>
+	  {% for form in exist_player_fs.forms %}
+	  <tr>
+	    {{ form }}
+	  </tr>
+	  {% endfor %}
+	</tbody>
+      </table>
+
+	{{ location_formset.management_form }}
+	{{ exist_player_fs.management_form }}
+-->
