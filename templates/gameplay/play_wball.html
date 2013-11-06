@@ -60,17 +60,12 @@
 	  <table class="table table-hover">
 	    <tr>
 	      <th>Pitcher</th>
-	      <th>ERA</th>
+	      <th>Runs Against/Innings</th>
 	    </tr>
-	    {% for player in players %}
-	    <tr>
-	      <td>{{ player.name }}</td>
-	      <script text="javascript">
-		var player = "{{ player.name }}"
-	      </script>
-	      <td>0</td>
+	    <tr ng-repeat="pitcher in pitcherList" ng-style="pitcher.turnStyle">
+	      <td>{% verbatim %}{{pitcher.name}}{% endverbatim %}</td>
+	      <td>{% verbatim %}{{pitcher.runsagainst}}/{{inningNum}}{% endverbatim %}</td>
 	    </tr>
-	    {% endfor %}
 	  </table>
 	</div> <!-- End span2 -->
 	
@@ -85,13 +80,11 @@
 	      <th>Turn</th>
 	      <th>Hits/Strike-Outs</th>
 	    </tr>
-	    {% for player in players %}
-	    <tr>
-	      <td>{{ player.name }}</td>
-	      <td>1</td>
-	      <td>0/0</td>
+	    <tr ng-repeat="batter in batterList" ng-style="batter.turnStyle">
+	      <td>{% verbatim %}{{ batter.name }}{% endverbatim %}</td>
+	      <td>{% verbatim %}{{ batter.turn }}{% endverbatim %}</td>
+	      <td>{% verbatim %}{{ batter.hits }}/{{batter.sos}}{% endverbatim %}</td>
 	    </tr>
-	    {% endfor %}
 	  </table>
 	</div> <!-- End span3 -->
       </div> <!-- End row -->
@@ -119,32 +112,15 @@
 	      <i class="icon-minus"></i> Undo</button></td>
 	</tr>
 	<tr>
-	  <th>Single</th>
-	  <td></td>
-	  <td></td>
-	  <td align="justify"><button class="btn btn-success" ng-click="single()">
-	      Score!</td>
-	</tr>
-	<tr>
-	  <th>Double</th>
-	  <td></td>
-	  <td></td>
-	  <td align="justify"><button class="btn btn-success" ng-click="double()">
-	      Score!!</button></td>
-	</tr>
-	<tr>
-	  <th>Triple</th>
-	  <td></td>
-	  <td></td>
-	  <td align="justify"><button class="btn btn-success" ng-click="triple()">
-	      Score!!!</button></td>
-	</tr>
-	<tr>
-	  <th>Homer</th>
-	  <td></td>
-	  <td></td>
-	  <td align="justify"><button class="btn btn-success" ng-click="triple()">
-	      Score!!!!</button></td>
+	  <th>Hits</th>
+	  <td colspan="0">
+	    <div class="btn-group">
+	      <button class="btn" ng-click="score(1)">Single</button>
+	      <button class="btn" ng-click="score(2)">Double</button>
+	      <button class="btn" ng-click="score(3)">Triple</button>
+	      <button class="btn" ng-click="score(4)">Homer</button>
+	    </div>
+	  </td>
 	</tr>
       </table>
     </div> <!-- End span4 -->

@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 {% load static %}
 {% block extrahead %}
+<script type="text/javascript">
+  var playersList=[];
+  {% for player in players %}
+  playersList.push({'name':"{{player.name}}",'id':{{player.id}} });
+  {% endfor %}
+</script>
 <script type="text/javascript" src="{% static "gameplay/js/update_play.js" %}"></script>
 {% endblock %}
 {% block body-content %}
@@ -15,9 +21,11 @@
 	  <br>
 	  Location: {{ location }}<br>
 	  Today's Date: {{ today|date:"D d M Y" }}<br>
+	  <button ng-click="test()">Send Data</button>{% csrf_token %}
 	  <br>
 	  <b>Inning:     </b>{% verbatim %}{{inningNum}}{% endverbatim %}<br>
-	  <b>Strike Outs: </b>{% verbatim %}{{numSO}}{% endverbatim %}
+	  <b>Strike Outs: </b>{% verbatim %}{{numSO}}{% endverbatim %}<br>
+	  {% verbatim %}{{playerLList}}{% endverbatim %}
 	</div>
 	<div class="span3">
 	  <h4>Current Field</h4>
@@ -57,6 +65,9 @@
 	    {% for player in players %}
 	    <tr>
 	      <td>{{ player.name }}</td>
+	      <script text="javascript">
+		var player = "{{ player.name }}"
+	      </script>
 	      <td>0</td>
 	    </tr>
 	    {% endfor %}
@@ -72,7 +83,7 @@
 	    <tr>
 	      <th>Batter</th>
 	      <th>Turn</th>
-	      <th>Hits:SOs</th>
+	      <th>Hits/Strike-Outs</th>
 	    </tr>
 	    {% for player in players %}
 	    <tr>

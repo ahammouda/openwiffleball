@@ -64,8 +64,11 @@ class BatterScore(models.Model):
 class PitcherScore(models.Model):
     inning=models.ForeignKey('Inning')
     player=models.ForeignKey('Player')
+
+    runsagainst=models.IntegerField(null=False)
+    # num_sos=models.IntegerField -- This will always be 3 to end an inning
     
-    # ERA = (# At bats)/(# Strikeouts (Ks))
-    era=models.IntegerField(null=False)
+    # ERA = (# At bats)/(# Strikeouts (Ks))    
+    # era=models.IntegerField(null=False)
     def __unicode__(self):
         return self.era
